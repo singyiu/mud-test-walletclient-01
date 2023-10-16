@@ -27,3 +27,9 @@ eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
 
 [profile.zkevm-testnet]
 eth_rpc_url = "https://rpc.public.zkevm-test.net"
+
+[profile.scroll-sepolia-testnet]
+eth_rpc_url = "https://sepolia-rpc.scroll.io/"
+
+[profile.mantle-testnet]
+eth_rpc_url = "https://rpc.testnet.mantle.xyz"
