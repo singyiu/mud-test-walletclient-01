@@ -10,6 +10,7 @@
     "build:mud": "rimraf src/codegen && mud tablegen && mud worldgen",
     "deploy:local": "pnpm run build && mud deploy",
     "deploy:testnet": "pnpm run build && mud deploy --profile=lattice-testnet",
+    "deploy:zkevm-testnet": "pnpm run build && mud deploy --profile=zkevm-testnet",
     "dev": "pnpm mud dev-contracts",
     "lint": "pnpm run prettier && pnpm run solhint",
     "prettier": "prettier --write 'src/**/*.sol'",
@@ -17,10 +18,10 @@
     "test": "tsc --noEmit && mud test"
   },
   "dependencies": {
-    "@latticexyz/cli": "2.0.0-next.11",
-    "@latticexyz/schema-type": "2.0.0-next.11",
-    "@latticexyz/store": "2.0.0-next.11",
-    "@latticexyz/world": "2.0.0-next.11"
+    "@latticexyz/cli": "2.0.0-main-aa5b2272",
+    "@latticexyz/schema-type": "2.0.0-main-aa5b2272",
+    "@latticexyz/store": "2.0.0-main-aa5b2272",
+    "@latticexyz/world": "2.0.0-main-aa5b2272"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
@@ -29,7 +30,7 @@
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.7",
-    "solhint-config-mud": "2.0.0-next.11",
-    "solhint-plugin-mud": "2.0.0-next.11"
+    "solhint-config-mud": "2.0.0-main-aa5b2272",
+    "solhint-plugin-mud": "2.0.0-main-aa5b2272"
   }
 }
