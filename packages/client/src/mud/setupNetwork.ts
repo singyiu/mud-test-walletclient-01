@@ -3,7 +3,7 @@
  * (https://viem.sh/docs/getting-started.html).
  * This line imports the functions we need from it.
  */
-import { createPublicClient, fallback, webSocket, http, createWalletClient, Hex, parseEther, ClientConfig, custom } from "viem";
+import { createPublicClient, fallback, webSocket, http, createWalletClient, Hex, parseEther, ClientConfig } from "viem";
 import { createFaucetService } from "@latticexyz/services/faucet";
 import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { getNetworkConfig } from "./getNetworkConfig";
@@ -50,17 +50,6 @@ export async function setupNetwork() {
   });
 
   /*
-   * Taking reference from https://mud.dev/tutorials/minimal/deploy
-   * section Wallet-managed address
-   */
-  const walletClient = createWalletClient({
-    ...clientOptions,
-    transport: custom(window.ethereum)
-  });
-  const accounts = await walletClient.requestAddresses();
-  walletClient.account = { address: accounts[0] };
-
-  /*
    * Create an observable for contract writes that we can
    * pass into MUD dev tools for transaction observability.
    */
@@ -73,8 +62,7 @@ export async function setupNetwork() {
     address: networkConfig.worldAddress as Hex,
     abi: IWorldAbi,
     publicClient,
-    //walletClient: burnerWalletClient,
-    walletClient,
+    walletClient: burnerWalletClient,
     onWrite: (write) => write$.next(write),
   });
 
@@ -97,11 +85,8 @@ export async function setupNetwork() {
    * less than 1 ETH. Repeat every 20 seconds to ensure you don't
    * run out.
    */
-  console.log("networkConfig", networkConfig);
   if (networkConfig.faucetServiceUrl) {
-    //const address = burnerAccount.address;
-    const address = walletClient.account.address;
-    console.log("walletClient", walletClient);
+    const address = burnerAccount.address;
     console.info("[Dev Faucet]: Player address -> ", address);
 
     const faucet = createFaucetService(networkConfig.faucetServiceUrl);
@@ -109,7 +94,7 @@ export async function setupNetwork() {
     const requestDrip = async () => {
       const balance = await publicClient.getBalance({ address });
       console.info(`[Dev Faucet]: Player balance -> ${balance}`);
-      const lowBalance = balance < parseEther("100");
+      const lowBalance = balance < parseEther("1");
       if (lowBalance) {
         console.info("[Dev Faucet]: Balance is low, dripping funds to player");
         // Double drip
@@ -126,11 +111,9 @@ export async function setupNetwork() {
   return {
     world,
     components,
-    //playerEntity: encodeEntity({ address: "address" }, { address: burnerWalletClient.account.address }),
-    playerEntity: encodeEntity({ address: "address" }, { address: walletClient.account.address }),
+    playerEntity: encodeEntity({ address: "address" }, { address: burnerWalletClient.account.address }),
     publicClient,
-    //walletClient: burnerWalletClient,
-    walletClient,
+    walletClient: burnerWalletClient,
     latestBlock$,
     storedBlockLogs$,
     waitForTransaction,
