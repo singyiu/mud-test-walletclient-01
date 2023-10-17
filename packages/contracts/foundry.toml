@@ -27,6 +27,7 @@ eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
 
 [profile.zkevm-testnet]
 eth_rpc_url = "https://rpc.public.zkevm-test.net"
+gas_limit = 300000000000
 
 [profile.scroll-sepolia-testnet]
 eth_rpc_url = "https://sepolia-rpc.scroll.io/"
